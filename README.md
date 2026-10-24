@@ -5,32 +5,36 @@
 
 ---
 
-## ⚡ Quick Start in 10 Seconds: `validatekaro`
+## ⚡ Quick Start: `ValidateKaro` Anywhere on the Computer
 
-Run the all-in-one validation harness with a single command across your preferred operating system and shell:
-
-### 🚀 Instant Harness Command (`validatekaro`)
-
-| Environment / Shell | Command | Description |
-| :--- | :--- | :--- |
-| **Unix / Linux / macOS** (Bash, Zsh) | `./validatekaro` | Runs executable Unix shell script with PYTHONPATH resolution |
-| **Windows Command Prompt** (cmd.exe) | `validatekaro.bat` | Batch harness passing arguments to Python runner |
-| **Windows PowerShell** | `.\validatekaro.ps1` | PowerShell script with error handling and exit codes |
-| **Python CLI Direct** | `python3 engine/cli.py validatekaro` | Native Python standard library invocation |
+`ValidateKaro` is designed to be executed **from ANY path or directory on your computer, regardless of where you are in your filesystem**:
 
 ```bash
-# Unix / Linux / macOS:
-./validatekaro
+# Navigate to any folder on your machine:
+cd /home/user/my_project
+# or C:\Users\developer\projects\ecommerce
 
-# Windows CMD:
-validatekaro.bat
+# Execute ValidateKaro on any local module:
+ValidateKaro my_service.py
 
-# Windows PowerShell:
-.\validatekaro.ps1
-
-# Or target a specific module:
-./validatekaro samples/ecommerce_cart.py
+# Or run the self-diagnostic harness on the environment:
+ValidateKaro
 ```
+
+### 🚀 Cross-Platform Support (Unix, Windows CMD, PowerShell)
+
+| Operating System / Shell | Global Command | Installation (Run Once) |
+| :--- | :--- | :--- |
+| **Linux & macOS** (`bash`, `zsh`) | `ValidateKaro [file.py]` | Already in `/usr/local/bin` or run `./install.sh` |
+| **Windows CMD** (`cmd.exe`) | `ValidateKaro [file.py]` | Run `install.bat` (adds to User `PATH`) |
+| **Windows PowerShell** (`pwsh`) | `ValidateKaro [file.py]` | Run `.\install.ps1` (registers global function) |
+| **Universal (Pip)** | `ValidateKaro [file.py]` | Run `pip install -e .` from TestCraft root |
+
+### How It Resolves Any Path
+When you invoke `ValidateKaro path/to/module.py`:
+1. It automatically resolves the target file's absolute path relative to your **current working directory** (`$PWD` / `$CD`).
+2. It dynamically injects the target module's parent directory and the TestCraft engine into `PYTHONPATH`.
+3. It validates the code's AST syntax, enforces the 60KB byte ceiling, executes the test suite in an isolated subprocess, and self-heals broken assertions.
 
 ---
 

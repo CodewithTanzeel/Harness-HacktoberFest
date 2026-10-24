@@ -308,10 +308,15 @@ export default function App() {
               </button>
             </div>
 
-            {/* Quick Navigation Pills */}
-            <div className="p-3 rounded-lg bg-indigo-950/30 border border-indigo-500/20 text-indigo-300 text-[11px] leading-relaxed">
-              <span className="font-bold text-white block mb-1">💡 Requirement Elicitation in TestCraft</span>
-              TestCraft derives test specifications directly from your code&apos;s AST: function signatures, docstrings, type annotations, and raised exceptions. Click any command below to load it into the terminal.
+            {/* Global Anywhere Notice */}
+            <div className="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 text-[11px] leading-relaxed">
+              <span className="font-bold text-white block mb-1">⚡ Global Anywhere-on-Computer Support</span>
+              Run <code className="text-white font-mono font-bold">ValidateKaro</code> from <strong>ANY directory or path</strong> on your computer:
+              <ul className="mt-1 list-disc list-inside text-slate-300 space-y-0.5">
+                <li><strong>Linux / macOS:</strong> <code className="text-emerald-400">ValidateKaro [target.py]</code> (in /usr/local/bin)</li>
+                <li><strong>Windows CMD:</strong> <code className="text-emerald-400">ValidateKaro [target.py]</code> (via install.bat)</li>
+                <li><strong>PowerShell:</strong> <code className="text-emerald-400">ValidateKaro [target.py]</code> (via install.ps1)</li>
+              </ul>
             </div>
 
             {/* Practical Cheatsheet */}

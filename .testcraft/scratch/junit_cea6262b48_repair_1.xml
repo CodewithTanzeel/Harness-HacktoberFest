@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="testcraft_suite" tests="3" failures="0" errors="0" time="0.001"><testcase name="test_is_even_edge_cases" classname="test_run_cea6262b48_repair_1" time="0.000" /><testcase name="test_is_even_normal" classname="test_run_cea6262b48_repair_1" time="0.000" /><testcase name="test_multiply_by_two_basic" classname="test_run_cea6262b48_repair_1" time="0.000" /></testsuite>

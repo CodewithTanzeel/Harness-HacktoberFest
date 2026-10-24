@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# ValidateKaro - Global Terminal Command (Linux / macOS / Unix)
+# Can be run from ANY path or directory on the machine.
+# ==============================================================================
+
+# Locate TestCraft installation directory
+INSTALL_DIR="/app/applet"
+
+if [ ! -d "$INSTALL_DIR/engine" ]; then
+  # Fallback to script's real directory if moved
+  SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+  while [ -h "$SCRIPT_SOURCE" ]; do
+    SCRIPT_DIR="$(cd -P "$(dirname "$SCRIPT_SOURCE")" >/dev/null 2>&1 && pwd)"
+    SCRIPT_SOURCE="$(readlink "$SCRIPT_SOURCE")"
+    [[ $SCRIPT_SOURCE != /* ]] && SCRIPT_SOURCE="$SCRIPT_DIR/$SCRIPT_SOURCE"
+  done
+  INSTALL_DIR="$(cd -P "$(dirname "$SCRIPT_SOURCE")/.." >/dev/null 2>&1 && pwd)"
+fi
+
+# If user provided a target file, resolve it relative to caller's current directory ($PWD)
+TARGET_ARG=""
+REMAINING_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -*)
+      REMAINING_ARGS+=("$1")
+      shift
+      ;;
+    *)
+      if [ -z "$TARGET_ARG" ]; then
+        # Resolve target path relative to current working directory
+        if [[ "$1" = /* ]]; then
+          TARGET_ARG="$1"
+        else
+          TARGET_ARG="$PWD/$1"
+        fi
+      else
+        REMAINING_ARGS+=("$1")
+      fi
+      shift
+      ;;
+  esac
+done
+
+export PYTHONPATH="$INSTALL_DIR:$PWD:$PYTHONPATH"
+
+if [ -n "$TARGET_ARG" ]; then
+  exec python3 "$INSTALL_DIR/engine/cli.py" validatekaro "$TARGET_ARG" "${REMAINING_ARGS[@]}"
+else
+  exec python3 "$INSTALL_DIR/engine/cli.py" validatekaro "${REMAINING_ARGS[@]}"
+fi

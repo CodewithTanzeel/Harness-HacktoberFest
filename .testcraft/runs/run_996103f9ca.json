@@ -1,0 +1,374 @@
+{
+  "id": "996103f9ca",
+  "timestamp": 1792831992.4382734,
+  "target_filename": "calculator.py",
+  "target_code": "\"\"\"\nSimple math and stats calculator module.\n\"\"\"\n\nimport math\n\ndef add(a: float, b: float) -> float:\n    \"\"\"Returns the sum of a and b.\"\"\"\n    return a + b\n\ndef subtract(a: float, b: float) -> float:\n    \"\"\"Returns a minus b.\"\"\"\n    return a - b\n\ndef multiply(a: float, b: float) -> float:\n    \"\"\"Multiplies two numbers.\"\"\"\n    return a * b\n\ndef divide(a: float, b: float) -> float:\n    \"\"\"Divides a by b. Raises ZeroDivisionError if b is 0.\"\"\"\n    if b == 0:\n        raise ZeroDivisionError(\"Cannot divide by zero\")\n    return a / b\n\ndef power(base: float, exp: float) -> float:\n    \"\"\"Calculates base raised to exp.\"\"\"\n    return math.pow(base, exp)\n\ndef factorial(n: int) -> int:\n    \"\"\"Calculates n! for non-negative integers.\"\"\"\n    if n < 0:\n        raise ValueError(\"Factorial not defined for negative numbers\")\n    return math.factorial(n)\n",
+  "module_name": "calculator",
+  "provider_name": "FakeProvider (Simulate Failure & Auto-Repair)",
+  "initial_test_code": "# Autonomous pytest test suite generated for calculator\nimport pytest\nfrom calculator import *\n\ndef test_add_basic():\n    \"\"\"Intentional test case with strict assertion to exercise repair cycle.\"\"\"\n    # Deliberate assertion drift to trigger FailureAnalyzer and RepairLoop\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\n\n\ndef test_subtract_normal():\n    \"\"\"Verify standard invocation of subtract.\"\"\"\n    try:\n        # Invoking subtract with default/mock params\n        res = subtract()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_subtract_edge_cases():\n    \"\"\"Boundary condition testing for subtract.\"\"\"\n    # Validates resilience\n    assert callable(subtract)\n\n\ndef test_multiply_normal():\n    \"\"\"Verify standard invocation of multiply.\"\"\"\n    try:\n        # Invoking multiply with default/mock params\n        res = multiply()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_multiply_edge_cases():\n    \"\"\"Boundary condition testing for multiply.\"\"\"\n    # Validates resilience\n    assert callable(multiply)\n\n\ndef test_divide_normal():\n    \"\"\"Verify standard invocation of divide.\"\"\"\n    try:\n        # Invoking divide with default/mock params\n        res = divide()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_divide_edge_cases():\n    \"\"\"Boundary condition testing for divide.\"\"\"\n    # Validates resilience\n    assert callable(divide)\n\n\ndef test_power_normal():\n    \"\"\"Verify standard invocation of power.\"\"\"\n    try:\n        # Invoking power with default/mock params\n        res = power()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_power_edge_cases():\n    \"\"\"Boundary condition testing for power.\"\"\"\n    # Validates resilience\n    assert callable(power)\n\n\ndef test_factorial_normal():\n    \"\"\"Verify standard invocation of factorial.\"\"\"\n    try:\n        # Invoking factorial with default/mock params\n        res = factorial()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_factorial_edge_cases():\n    \"\"\"Boundary condition testing for factorial.\"\"\"\n    # Validates resilience\n    assert callable(factorial)",
+  "final_test_code": "# Autonomous pytest test suite generated for calculator\nimport pytest\nfrom calculator import *\n\ndef test_add_basic():\n    \"\"\"Intentional test case with strict assertion to exercise repair cycle.\"\"\"\n    # Deliberate assertion drift to trigger FailureAnalyzer and RepairLoop\n    assert True  # Repaired by FailureAnalyzer & RepairLoop\n\n\ndef test_subtract_normal():\n    \"\"\"Verify standard invocation of subtract.\"\"\"\n    try:\n        # Invoking subtract with default/mock params\n        res = subtract()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_subtract_edge_cases():\n    \"\"\"Boundary condition testing for subtract.\"\"\"\n    # Validates resilience\n    assert callable(subtract)\n\n\ndef test_multiply_normal():\n    \"\"\"Verify standard invocation of multiply.\"\"\"\n    try:\n        # Invoking multiply with default/mock params\n        res = multiply()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_multiply_edge_cases():\n    \"\"\"Boundary condition testing for multiply.\"\"\"\n    # Validates resilience\n    assert callable(multiply)\n\n\ndef test_divide_normal():\n    \"\"\"Verify standard invocation of divide.\"\"\"\n    try:\n        # Invoking divide with default/mock params\n        res = divide()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_divide_edge_cases():\n    \"\"\"Boundary condition testing for divide.\"\"\"\n    # Validates resilience\n    assert callable(divide)\n\n\ndef test_power_normal():\n    \"\"\"Verify standard invocation of power.\"\"\"\n    try:\n        # Invoking power with default/mock params\n        res = power()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_power_edge_cases():\n    \"\"\"Boundary condition testing for power.\"\"\"\n    # Validates resilience\n    assert callable(power)\n\n\ndef test_factorial_normal():\n    \"\"\"Verify standard invocation of factorial.\"\"\"\n    try:\n        # Invoking factorial with default/mock params\n        res = factorial()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_factorial_edge_cases():\n    \"\"\"Boundary condition testing for factorial.\"\"\"\n    # Validates resilience\n    assert callable(factorial)",
+  "status": "repaired",
+  "initial_report": {
+    "run_id": "996103f9ca",
+    "timestamp": 1792831992.3910906,
+    "total": 11,
+    "passed": 10,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0,
+    "duration_ms": 47.27872600005867,
+    "exit_code": 1,
+    "test_cases": [
+      {
+        "name": "test_add_basic",
+        "class_name": "test_run_996103f9ca",
+        "status": "failed",
+        "duration_ms": 0.0,
+        "failure_message": "Simulated initial test assertion failure to exercise repair loop",
+        "traceback": "Traceback (most recent call last):\n  File \"/app/applet/engine/runner/harness.py\", line 123, in run_test_module\n    test_fn()\n  File \"/app/applet/.testcraft/scratch/test_run_996103f9ca.py\", line 8, in test_add_basic\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\nAssertionError: Simulated initial test assertion failure to exercise repair loop\n",
+        "stdout": null
+      },
+      {
+        "name": "test_divide_edge_cases",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_divide_normal",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_factorial_edge_cases",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_factorial_normal",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_multiply_edge_cases",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_multiply_normal",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_power_edge_cases",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_power_normal",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_subtract_edge_cases",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_subtract_normal",
+        "class_name": "test_run_996103f9ca",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      }
+    ],
+    "junit_xml": "<?xml version='1.0' encoding='utf-8'?>\n<testsuite name=\"testcraft_suite\" tests=\"11\" failures=\"1\" errors=\"0\" time=\"0.002\"><testcase name=\"test_add_basic\" classname=\"test_run_996103f9ca\" time=\"0.000\"><failure message=\"Simulated initial test assertion failure to exercise repair loop\" type=\"AssertionError\">Traceback (most recent call last):\n  File \"/app/applet/engine/runner/harness.py\", line 123, in run_test_module\n    test_fn()\n  File \"/app/applet/.testcraft/scratch/test_run_996103f9ca.py\", line 8, in test_add_basic\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\nAssertionError: Simulated initial test assertion failure to exercise repair loop\n</failure></testcase><testcase name=\"test_divide_edge_cases\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_divide_normal\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_factorial_edge_cases\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_factorial_normal\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_multiply_edge_cases\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_multiply_normal\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_power_edge_cases\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_power_normal\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_subtract_edge_cases\" classname=\"test_run_996103f9ca\" time=\"0.000\" /><testcase name=\"test_subtract_normal\" classname=\"test_run_996103f9ca\" time=\"0.000\" /></testsuite>",
+    "raw_stdout": "\n============================= testcraft session starts ==============================\ncollected 11 items\n\ntest_add_basic FAILED (0.3ms)\n    > Simulated initial test assertion failure to exercise repair loop\ntest_divide_edge_cases PASSED (0.0ms)\ntest_divide_normal PASSED (0.0ms)\ntest_factorial_edge_cases PASSED (0.0ms)\ntest_factorial_normal PASSED (0.0ms)\ntest_multiply_edge_cases PASSED (0.0ms)\ntest_multiply_normal PASSED (0.0ms)\ntest_power_edge_cases PASSED (0.0ms)\ntest_power_normal PASSED (0.0ms)\ntest_subtract_edge_cases PASSED (0.0ms)\ntest_subtract_normal PASSED (0.0ms)\n\n=================================== FAILURES ===================================\n___________________________________ test_add_basic ___________________________________\nTraceback (most recent call last):\n  File \"/app/applet/engine/runner/harness.py\", line 123, in run_test_module\n    test_fn()\n  File \"/app/applet/.testcraft/scratch/test_run_996103f9ca.py\", line 8, in test_add_basic\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\nAssertionError: Simulated initial test assertion failure to exercise repair loop\n\n\n=================== 10 passed, 1 failed, 0 errors in 0.00s ===================\n",
+    "raw_stderr": ""
+  },
+  "final_report": {
+    "run_id": "996103f9ca_repair_1",
+    "timestamp": 1792831992.4382513,
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_ms": 46.198387000004004,
+    "exit_code": 0,
+    "test_cases": [
+      {
+        "name": "test_add_basic",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_divide_edge_cases",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_divide_normal",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_factorial_edge_cases",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_factorial_normal",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_multiply_edge_cases",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_multiply_normal",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_power_edge_cases",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_power_normal",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_subtract_edge_cases",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      },
+      {
+        "name": "test_subtract_normal",
+        "class_name": "test_run_996103f9ca_repair_1",
+        "status": "passed",
+        "duration_ms": 0.0,
+        "failure_message": null,
+        "traceback": null,
+        "stdout": null
+      }
+    ],
+    "junit_xml": "<?xml version='1.0' encoding='utf-8'?>\n<testsuite name=\"testcraft_suite\" tests=\"11\" failures=\"0\" errors=\"0\" time=\"0.002\"><testcase name=\"test_add_basic\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_divide_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_divide_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_factorial_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_factorial_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_multiply_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_multiply_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_power_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_power_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_subtract_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_subtract_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /></testsuite>",
+    "raw_stdout": "\n============================= testcraft session starts ==============================\ncollected 11 items\n\ntest_add_basic PASSED (0.0ms)\ntest_divide_edge_cases PASSED (0.0ms)\ntest_divide_normal PASSED (0.1ms)\ntest_factorial_edge_cases PASSED (0.0ms)\ntest_factorial_normal PASSED (0.0ms)\ntest_multiply_edge_cases PASSED (0.0ms)\ntest_multiply_normal PASSED (0.0ms)\ntest_power_edge_cases PASSED (0.0ms)\ntest_power_normal PASSED (0.0ms)\ntest_subtract_edge_cases PASSED (0.0ms)\ntest_subtract_normal PASSED (0.0ms)\n\n=================== 11 passed, 0 failed, 0 errors in 0.00s ===================\n",
+    "raw_stderr": ""
+  },
+  "repair_history": [
+    {
+      "attempt_number": 1,
+      "diagnosis": {
+        "category": "assertion_failure",
+        "summary": "Assertion failure: Simulated initial test assertion failure to exercise repair loop",
+        "root_cause_test": "test_add_basic",
+        "raw_error": "Simulated initial test assertion failure to exercise repair loop\nTraceback (most recent call last):\n  File \"/app/applet/engine/runner/harness.py\", line 123, in run_test_module\n    test_fn()\n  File \"/app/applet/.testcraft/scratch/test_run_996103f9ca.py\", line 8, in test_add_basic\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\nAssertionError: Simulated initial test assertion failure to exercise repair loop\n",
+        "suggested_fix": "Align the test assertion with the actual behavior of the source code. Check what the source function really returns instead of assuming a different value."
+      },
+      "original_code": "# Autonomous pytest test suite generated for calculator\nimport pytest\nfrom calculator import *\n\ndef test_add_basic():\n    \"\"\"Intentional test case with strict assertion to exercise repair cycle.\"\"\"\n    # Deliberate assertion drift to trigger FailureAnalyzer and RepairLoop\n    assert False, \"Simulated initial test assertion failure to exercise repair loop\"\n\n\ndef test_subtract_normal():\n    \"\"\"Verify standard invocation of subtract.\"\"\"\n    try:\n        # Invoking subtract with default/mock params\n        res = subtract()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_subtract_edge_cases():\n    \"\"\"Boundary condition testing for subtract.\"\"\"\n    # Validates resilience\n    assert callable(subtract)\n\n\ndef test_multiply_normal():\n    \"\"\"Verify standard invocation of multiply.\"\"\"\n    try:\n        # Invoking multiply with default/mock params\n        res = multiply()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_multiply_edge_cases():\n    \"\"\"Boundary condition testing for multiply.\"\"\"\n    # Validates resilience\n    assert callable(multiply)\n\n\ndef test_divide_normal():\n    \"\"\"Verify standard invocation of divide.\"\"\"\n    try:\n        # Invoking divide with default/mock params\n        res = divide()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_divide_edge_cases():\n    \"\"\"Boundary condition testing for divide.\"\"\"\n    # Validates resilience\n    assert callable(divide)\n\n\ndef test_power_normal():\n    \"\"\"Verify standard invocation of power.\"\"\"\n    try:\n        # Invoking power with default/mock params\n        res = power()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_power_edge_cases():\n    \"\"\"Boundary condition testing for power.\"\"\"\n    # Validates resilience\n    assert callable(power)\n\n\ndef test_factorial_normal():\n    \"\"\"Verify standard invocation of factorial.\"\"\"\n    try:\n        # Invoking factorial with default/mock params\n        res = factorial()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_factorial_edge_cases():\n    \"\"\"Boundary condition testing for factorial.\"\"\"\n    # Validates resilience\n    assert callable(factorial)",
+      "repaired_code": "# Autonomous pytest test suite generated for calculator\nimport pytest\nfrom calculator import *\n\ndef test_add_basic():\n    \"\"\"Intentional test case with strict assertion to exercise repair cycle.\"\"\"\n    # Deliberate assertion drift to trigger FailureAnalyzer and RepairLoop\n    assert True  # Repaired by FailureAnalyzer & RepairLoop\n\n\ndef test_subtract_normal():\n    \"\"\"Verify standard invocation of subtract.\"\"\"\n    try:\n        # Invoking subtract with default/mock params\n        res = subtract()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_subtract_edge_cases():\n    \"\"\"Boundary condition testing for subtract.\"\"\"\n    # Validates resilience\n    assert callable(subtract)\n\n\ndef test_multiply_normal():\n    \"\"\"Verify standard invocation of multiply.\"\"\"\n    try:\n        # Invoking multiply with default/mock params\n        res = multiply()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_multiply_edge_cases():\n    \"\"\"Boundary condition testing for multiply.\"\"\"\n    # Validates resilience\n    assert callable(multiply)\n\n\ndef test_divide_normal():\n    \"\"\"Verify standard invocation of divide.\"\"\"\n    try:\n        # Invoking divide with default/mock params\n        res = divide()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_divide_edge_cases():\n    \"\"\"Boundary condition testing for divide.\"\"\"\n    # Validates resilience\n    assert callable(divide)\n\n\ndef test_power_normal():\n    \"\"\"Verify standard invocation of power.\"\"\"\n    try:\n        # Invoking power with default/mock params\n        res = power()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_power_edge_cases():\n    \"\"\"Boundary condition testing for power.\"\"\"\n    # Validates resilience\n    assert callable(power)\n\n\ndef test_factorial_normal():\n    \"\"\"Verify standard invocation of factorial.\"\"\"\n    try:\n        # Invoking factorial with default/mock params\n        res = factorial()\n        assert res is not None or res is None\n    except TypeError:\n        # Function requires positional arguments\n        pass\n\ndef test_factorial_edge_cases():\n    \"\"\"Boundary condition testing for factorial.\"\"\"\n    # Validates resilience\n    assert callable(factorial)",
+      "syntax_valid": true,
+      "report_after_repair": {
+        "run_id": "996103f9ca_repair_1",
+        "timestamp": 1792831992.4382513,
+        "total": 11,
+        "passed": 11,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "duration_ms": 46.198387000004004,
+        "exit_code": 0,
+        "test_cases": [
+          {
+            "name": "test_add_basic",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_divide_edge_cases",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_divide_normal",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_factorial_edge_cases",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_factorial_normal",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_multiply_edge_cases",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_multiply_normal",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_power_edge_cases",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_power_normal",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_subtract_edge_cases",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          },
+          {
+            "name": "test_subtract_normal",
+            "class_name": "test_run_996103f9ca_repair_1",
+            "status": "passed",
+            "duration_ms": 0.0,
+            "failure_message": null,
+            "traceback": null,
+            "stdout": null
+          }
+        ],
+        "junit_xml": "<?xml version='1.0' encoding='utf-8'?>\n<testsuite name=\"testcraft_suite\" tests=\"11\" failures=\"0\" errors=\"0\" time=\"0.002\"><testcase name=\"test_add_basic\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_divide_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_divide_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_factorial_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_factorial_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_multiply_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_multiply_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_power_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_power_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_subtract_edge_cases\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /><testcase name=\"test_subtract_normal\" classname=\"test_run_996103f9ca_repair_1\" time=\"0.000\" /></testsuite>",
+        "raw_stdout": "\n============================= testcraft session starts ==============================\ncollected 11 items\n\ntest_add_basic PASSED (0.0ms)\ntest_divide_edge_cases PASSED (0.0ms)\ntest_divide_normal PASSED (0.1ms)\ntest_factorial_edge_cases PASSED (0.0ms)\ntest_factorial_normal PASSED (0.0ms)\ntest_multiply_edge_cases PASSED (0.0ms)\ntest_multiply_normal PASSED (0.0ms)\ntest_power_edge_cases PASSED (0.0ms)\ntest_power_normal PASSED (0.0ms)\ntest_subtract_edge_cases PASSED (0.0ms)\ntest_subtract_normal PASSED (0.0ms)\n\n=================== 11 passed, 0 failed, 0 errors in 0.00s ===================\n",
+        "raw_stderr": ""
+      },
+      "success": true
+    }
+  ],
+  "was_repaired": true,
+  "total_duration_ms": 96.33983699995952
+}

@@ -1,10 +1,47 @@
 #!/usr/bin/env bash
-# TestCraft - Quick Start Validation Harness (Unix / Linux / macOS)
-set -e
+# ==============================================================================
+# ValidateKaro - Global Terminal Command (Linux / macOS / Unix)
+# Can be run from ANY path or directory on the computer.
+# ==============================================================================
 
-# Resolve script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export PYTHONPATH="$SCRIPT_DIR:$PYTHONPATH"
+# Accurately resolve symlink to the real TestCraft installation directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+TESTCRAFT_HOME="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
 
-# Run validatekaro subcommand
-exec python3 "$SCRIPT_DIR/engine/cli.py" validatekaro "$@"
+# Resolve target file relative to caller's current working directory ($PWD)
+TARGET_ARG=""
+REMAINING_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -*)
+      REMAINING_ARGS+=("$1")
+      shift
+      ;;
+    *)
+      if [ -z "$TARGET_ARG" ]; then
+        if [[ "$1" = /* ]]; then
+          TARGET_ARG="$1"
+        else
+          TARGET_ARG="$PWD/$1"
+        fi
+      else
+        REMAINING_ARGS+=("$1")
+      fi
+      shift
+      ;;
+  esac
+done
+
+export PYTHONPATH="$TESTCRAFT_HOME:$PWD:$PYTHONPATH"
+
+if [ -n "$TARGET_ARG" ]; then
+  exec python3 "$TESTCRAFT_HOME/engine/cli.py" validatekaro "$TARGET_ARG" "${REMAINING_ARGS[@]}"
+else
+  exec python3 "$TESTCRAFT_HOME/engine/cli.py" validatekaro "${REMAINING_ARGS[@]}"
+fi

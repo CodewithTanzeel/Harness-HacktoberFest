@@ -315,5 +315,14 @@ def main():
             print(f"  • {C.MAGENTA}{p['id']:<24}{C.RESET} | {p['name']} (Model: {p['model']})")
         print()
 
+def main_validatekaro():
+    """Global console script entry point for ValidateKaro."""
+    target = None
+    for arg in sys.argv[1:]:
+        if not arg.startswith("-"):
+            target = arg
+            break
+    cmd_validatekaro(target)
+
 if __name__ == "__main__":
     main()
