@@ -29,442 +29,107 @@ if (process.env.GEMINI_API_KEY) {
   });
 }
 
-// ---------------- API Routes ----------------
+// ---------------- CLI Execution API ----------------
 
-// 1. Get Available Providers
-app.get('/api/providers', (req, res) => {
-  const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
-  const providers = [
-    {
-      id: 'gemini-3.8-flash',
-      name: 'Gemini 3.8 Flash (Active Engine)',
-      model: 'gemini-3.8-flash',
-      isAvailable: hasGeminiKey,
-      description: 'Google Flagship Flash reasoning & code generation model',
-      recommended: true,
-    },
-    {
-      id: 'fake',
-      name: 'FakeProvider (Deterministic Mock / Zero-Token)',
-      model: 'mock-v1-deterministic',
-      isAvailable: true,
-      description: 'Instant zero-token deterministic mock generation with standard assertions',
-      recommended: false,
-    },
-    {
-      id: 'fake-simulate-repair',
-      name: 'FakeProvider (Simulate Failure & Auto-Repair)',
-      model: 'mock-v1-repair-loop',
-      isAvailable: true,
-      description: 'Deliberately creates assertion drift to exercise FailureAnalyzer & self-healing',
-      recommended: false,
-    },
-  ];
-  res.json({ providers, hasGeminiKey });
-});
-
-// 2. Get Sample Modules
-app.get('/api/samples', (req, res) => {
-  const samplesDir = path.join(__dirname, 'samples');
-  if (!fs.existsSync(samplesDir)) {
-    return res.json({ samples: [] });
+// 1. Direct CLI Command Execution Endpoint
+app.post('/api/cli/exec', (req, res) => {
+  const { command } = req.body;
+  if (!command || typeof command !== 'string') {
+    return res.status(400).json({ error: 'Command string is required' });
   }
 
-  const files = fs.readdirSync(samplesDir).filter(f => f.endsWith('.py'));
-  const samples = files.map(file => {
-    const fullPath = path.join(samplesDir, file);
-    const content = fs.readFileSync(fullPath, 'utf-8');
-    return {
-      filename: file,
-      path: fullPath,
-      moduleName: file.replace('.py', ''),
-      content,
-      byteSize: Buffer.byteLength(content, 'utf-8'),
-    };
+  const trimmed = command.trim();
+  
+  // Whitelist/Sanitize for safe CLI commands
+  // Supported forms:
+  // - testcraft ...
+  // - ./testcraft ...
+  // - python3 engine/cli.py ...
+  // - python3 -m engine.cli ...
+  let cmdArgs: string[] = [];
+  
+  if (trimmed.startsWith('validatekaro') || trimmed.startsWith('./validatekaro')) {
+    const rawTokens = trimmed.replace(/^\.?\/?validatekaro(?:\.bat|\.ps1|\.cmd)?\s*/, '').trim();
+    const subArgs = rawTokens.length > 0 ? rawTokens.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [] : [];
+    cmdArgs = ['validatekaro', ...subArgs];
+  } else if (trimmed.startsWith('testcraft') || trimmed.startsWith('./testcraft')) {
+    const rawTokens = trimmed.replace(/^\.?\/?testcraft\s*/, '').trim();
+    cmdArgs = rawTokens.length > 0 ? rawTokens.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [] : ['--help'];
+  } else if (trimmed.startsWith('python3 engine/cli.py')) {
+    const rawTokens = trimmed.replace(/^python3\s+engine\/cli\.py\s*/, '').trim();
+    cmdArgs = rawTokens.length > 0 ? rawTokens.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [] : ['--help'];
+  } else if (trimmed === 'help' || trimmed === '--help' || trimmed === '-h') {
+    cmdArgs = ['--help'];
+  } else {
+    // Treat directly as testcraft subcommands
+    cmdArgs = trimmed.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || ['--help'];
+  }
+
+  // Strip enclosing quotes from arguments
+  const cleanedArgs = cmdArgs.map(arg => {
+    if ((arg.startsWith('"') && arg.endsWith('"')) || (arg.startsWith("'") && arg.endsWith("'"))) {
+      return arg.slice(1, -1);
+    }
+    return arg;
   });
 
-  res.json({ samples });
-});
-
-// 3. Inspect Python Source AST
-app.post('/api/ast/inspect', (req, res) => {
-  const { code, moduleName = 'module_under_test' } = req.body;
-  if (typeof code !== 'string') {
-    return res.status(400).json({ error: 'Source code is required' });
-  }
-
-  // Use python3 ast inspect script
-  const pyProcess = spawn('python3', [
-    '-c',
-    `
-import ast, json, sys
-code = sys.stdin.read()
-try:
-    tree = ast.parse(code)
-    imported = []
-    functions = []
-    classes = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for a in node.names:
-                imported.append(a.name)
-        elif isinstance(node, ast.ImportFrom):
-            if node.module:
-                imported.append(node.module)
-        elif isinstance(node, ast.FunctionDef) or isinstance(node, getattr(ast, 'AsyncFunctionDef', ())):
-            functions.append({"name": node.name, "lineno": node.lineno, "args": [a.arg for a in node.args.args]})
-        elif isinstance(node, ast.ClassDef):
-            classes.append({"name": node.name, "lineno": node.lineno})
-    print(json.dumps({
-        "isValid": True,
-        "imports": sorted(list(set(imported))),
-        "functions": functions,
-        "classes": classes
-    }))
-except SyntaxError as e:
-    print(json.dumps({
-        "isValid": False,
-        "error": f"{e.msg} at line {e.lineno}",
-        "lineno": e.lineno,
-        "offset": e.offset
-    }))
-except Exception as e:
-    print(json.dumps({"isValid": False, "error": str(e)}))
-`
-  ]);
-
-  let stdout = '';
-  let stderr = '';
-
-  pyProcess.stdin.write(code);
-  pyProcess.stdin.end();
-
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.stderr.on('data', chunk => stderr += chunk);
-
-  pyProcess.on('close', codeExit => {
-    try {
-      const parsed = JSON.parse(stdout);
-      res.json(parsed);
-    } catch (e) {
-      res.status(500).json({ error: 'Failed to inspect AST', details: stderr || stdout });
-    }
-  });
-});
-
-// 4. Generate Tests via Gemini or Provider
-app.post('/api/pipeline/generate', async (req, res) => {
-  const { code, filename = 'module_under_test.py', providerId = 'gemini-3.8-flash' } = req.body;
-  const moduleName = path.basename(filename, '.py');
-
-  if (!code) {
-    return res.status(400).json({ error: 'Code is required' });
-  }
-
-  // If Gemini provider is requested
-  if (providerId === 'gemini-3.8-flash' && ai) {
-    try {
-      const prompt = `You are an autonomous Python testing expert building tests for the module '${moduleName}'.
-
-CRITICAL IMPORT RULES:
-- The target module is named '${moduleName}'.
-- You MUST import the target module directly:
-  from ${moduleName} import *
-  OR:
-  import ${moduleName}
-- DO NOT hallucinate nonexistent directories or package prefixes (DO NOT write 'from src.${moduleName} import ...').
-- You may use any libraries already imported in the source module, standard libraries, and pytest.
-
-TESTING GUIDELINES:
-- Write clear, robust, independent test functions starting with 'test_'.
-- Test standard expected behavior, edge cases (0, negatives, empty collections, None), and exceptions using 'with pytest.raises(...)'.
-- Return ONLY executable Python code. No introductory commentary, explanations, or Markdown notes.
-
-SOURCE CODE:
-\`\`\`python
-${code}
-\`\`\`
-`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-      });
-
-      let generated = response.text || '';
-      // Strip markdown fences
-      generated = generated.replace(/^```(?:python)?/i, '').replace(/```$/i, '').trim();
-
-      // Normalize common hallucinated prefixes
-      const hallucinationRegex = new RegExp(`from\\s+(?:src|app|tests?)\\.${moduleName}\\s+import`, 'gi');
-      generated = generated.replace(hallucinationRegex, `from ${moduleName} import`);
-
-      return res.json({ testCode: generated, provider: 'gemini-3.8-flash' });
-    } catch (err: any) {
-      console.error('Gemini test generation failed:', err);
-      // Fallback gracefully to Python engine FakeProvider
-    }
-  }
-
-  // Fallback or explicit FakeProvider execution
-  const pyProcess = spawn('python3', [
-    '-c',
-    `
-import sys, json, os
-sys.path.insert(0, os.path.abspath("."))
-from engine.orchestrator import Orchestrator
-from engine.registry import ProviderRegistry
-from engine.generate.generator import TestGenerator
-
-payload = json.loads(sys.stdin.read())
-orch = Orchestrator()
-target = orch.analyze_source(payload.get("filename", "target.py"), code_content=payload.get("code", ""))
-provider = ProviderRegistry.get(payload.get("providerId", "fake")) or ProviderRegistry.get("fake")
-test_code, syntax_res, import_res = TestGenerator.generate(provider, target)
-print(json.dumps({
-    "testCode": test_code,
-    "syntaxValid": syntax_res.is_valid,
-    "syntaxError": syntax_res.error_message,
-    "importValid": import_res.is_valid,
-    "importError": import_res.error_message,
-    "provider": provider.display_name
-}))
-`
-  ]);
-
-  let stdout = '';
-  let stderr = '';
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.stderr.on('data', chunk => stderr += chunk);
-
-  pyProcess.stdin.write(JSON.stringify({ code, filename, providerId }));
-  pyProcess.stdin.end();
-
-  pyProcess.on('close', codeExit => {
-    try {
-      const data = JSON.parse(stdout);
-      res.json(data);
-    } catch (e) {
-      res.status(500).json({ error: 'Failed to generate tests', details: stderr || stdout });
-    }
-  });
-});
-
-// 5. Repair Tests via Gemini or Provider
-app.post('/api/pipeline/repair', async (req, res) => {
-  const {
-    sourceCode,
-    filename = 'target.py',
-    failedTestCode,
-    failureLog,
-    diagnosis,
-    providerId = 'gemini-3.8-flash'
-  } = req.body;
-
-  const moduleName = path.basename(filename, '.py');
-
-  if (providerId === 'gemini-3.8-flash' && ai) {
-    try {
-      const prompt = `You are an autonomous Python testing expert repairing a failed pytest suite.
-
-TARGET SOURCE CODE (${moduleName}):
-\`\`\`python
-${sourceCode}
-\`\`\`
-
-FAILED TEST SUITE:
-\`\`\`python
-${failedTestCode}
-\`\`\`
-
-FAILURE DIAGNOSIS:
-${diagnosis?.summary || 'Assertion or runtime error in test suite'}
-Suggested Fix: ${diagnosis?.suggestedFix || 'Align assertions with actual return values'}
-
-TRACEBACK & ERROR LOG:
-\`\`\`
-${(failureLog || '').slice(-1200)}
-\`\`\`
-
-REPAIR INSTRUCTIONS:
-- Repair the test suite so all tests pass cleanly against the TRUE behavior of ${moduleName}.
-- The target module MUST be imported directly: 'from ${moduleName} import *' or 'import ${moduleName}'.
-- Do not hallucinate package prefixes.
-- Return ONLY the complete, corrected Python test code. No explanations.
-`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-      });
-
-      let repaired = response.text || '';
-      repaired = repaired.replace(/^```(?:python)?/i, '').replace(/```$/i, '').trim();
-      const hallucinationRegex = new RegExp(`from\\s+(?:src|app|tests?)\\.${moduleName}\\s+import`, 'gi');
-      repaired = repaired.replace(hallucinationRegex, `from ${moduleName} import`);
-
-      return res.json({ repairedCode: repaired, provider: 'gemini-3.8-flash' });
-    } catch (err) {
-      console.error('Gemini repair failed:', err);
-    }
-  }
-
-  // Fallback to FakeProvider repair
-  const pyProcess = spawn('python3', [
-    '-c',
-    `
-import sys, json, os
-sys.path.insert(0, os.path.abspath("."))
-from engine.registry import ProviderRegistry
-
-payload = json.loads(sys.stdin.read())
-provider = ProviderRegistry.get(payload.get("providerId", "fake")) or ProviderRegistry.get("fake")
-repaired = provider.repair_tests(
-    source_code=payload.get("sourceCode", ""),
-    module_name=payload.get("moduleName", "target"),
-    failed_test_code=payload.get("failedTestCode", ""),
-    failure_log=payload.get("failureLog", ""),
-    diagnosis_summary=payload.get("diagnosis", {}).get("summary", ""),
-    suggested_fix=payload.get("diagnosis", {}).get("suggestedFix", "")
-)
-print(json.dumps({"repairedCode": repaired, "provider": provider.display_name}))
-`
-  ]);
-
-  let stdout = '';
-  let stderr = '';
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.stderr.on('data', chunk => stderr += chunk);
-
-  pyProcess.stdin.write(JSON.stringify({
-    sourceCode,
-    moduleName,
-    failedTestCode,
-    failureLog,
-    diagnosis,
-    providerId
-  }));
-  pyProcess.stdin.end();
-
-  pyProcess.on('close', () => {
-    try {
-      res.json(JSON.parse(stdout));
-    } catch (e) {
-      res.status(500).json({ error: 'Repair execution error', details: stderr || stdout });
-    }
-  });
-});
-
-// 6. Execute Full Pipeline (CLI / Orchestrator integration)
-app.post('/api/pipeline/run', (req, res) => {
-  const {
-    sourceCode,
-    filename = 'calculator.py',
-    providerId = 'fake',
-    testCodeOverride = null
-  } = req.body;
-
-  // Write temporary target file to scratch dir to avoid mutating sample source files
-  const scratchDir = path.join(__dirname, '.testcraft', 'scratch');
-  if (!fs.existsSync(scratchDir)) {
-    fs.mkdirSync(scratchDir, { recursive: true });
-  }
-
-  const safeFilename = path.basename(filename);
-  const targetPath = path.join(scratchDir, safeFilename);
-  fs.writeFileSync(targetPath, sourceCode, 'utf-8');
-
-  const pyArgs = [
-    'engine/cli.py',
-    'run',
-    targetPath,
-    '--provider',
-    providerId,
-    '--json'
-  ];
-
-  const pyProcess = spawn('python3', pyArgs, {
+  const pyProcess = spawn('python3', ['engine/cli.py', ...cleanedArgs], {
     cwd: __dirname,
     env: {
       ...process.env,
-      PYTHONPATH: `${scratchDir}:${__dirname}:${process.env.PYTHONPATH || ''}`,
-    }
+      PYTHONPATH: `.:${__dirname}:${process.env.PYTHONPATH || ''}`,
+      PYTHONUNBUFFERED: '1',
+    },
   });
 
   let stdout = '';
   let stderr = '';
 
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.stderr.on('data', chunk => stderr += chunk);
+  pyProcess.stdout.on('data', chunk => {
+    stdout += chunk.toString();
+  });
+
+  pyProcess.stderr.on('data', chunk => {
+    stderr += chunk.toString();
+  });
 
   pyProcess.on('close', exitCode => {
-    try {
-      const record = JSON.parse(stdout);
-      res.json({ success: true, record, exitCode });
-    } catch (e) {
-      res.status(500).json({
-        success: false,
-        error: 'Engine execution produced non-JSON output',
-        stdout,
-        stderr,
-        exitCode
-      });
-    }
+    res.json({
+      command: trimmed,
+      stdout,
+      stderr,
+      exitCode: exitCode ?? 0,
+    });
   });
 });
 
-// 7. Get Past Runs from RunStore
-app.get('/api/runs', (req, res) => {
-  const pyProcess = spawn('python3', [
-    '-c',
-    `
-import sys, json, os
-sys.path.insert(0, os.path.abspath("."))
-from engine.store.run_store import RunStore
-store = RunStore()
-print(json.dumps(store.list_runs(limit=30)))
-`
-  ]);
+// 2. Get CLI Info & Sample Targets
+app.get('/api/cli/info', (req, res) => {
+  const samplesDir = path.join(__dirname, 'samples');
+  let samples: string[] = [];
+  if (fs.existsSync(samplesDir)) {
+    samples = fs.readdirSync(samplesDir).filter(f => f.endsWith('.py')).map(f => `samples/${f}`);
+  }
 
-  let stdout = '';
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.on('close', () => {
-    try {
-      res.json({ runs: JSON.parse(stdout) });
-    } catch (e) {
-      res.json({ runs: [] });
-    }
+  res.json({
+    name: 'testcraft',
+    version: '0.1.0',
+    pythonVersion: 'Python 3.10.12',
+    isolation: 'Subprocess with resolved PYTHONPATH',
+    hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
+    samples,
   });
 });
 
-// 8. Get Specific Run by ID
-app.get('/api/runs/:id', (req, res) => {
-  const runId = req.params.id;
-  const pyProcess = spawn('python3', [
-    '-c',
-    `
-import sys, json, os
-sys.path.insert(0, os.path.abspath("."))
-from engine.store.run_store import RunStore
-store = RunStore()
-run = store.get_run("${runId}")
-print(json.dumps(run if run else {}))
-`
-  ]);
-
-  let stdout = '';
-  pyProcess.stdout.on('data', chunk => stdout += chunk);
-  pyProcess.on('close', () => {
-    try {
-      const data = JSON.parse(stdout);
-      if (Object.keys(data).length === 0) {
-        return res.status(404).json({ error: 'Run not found' });
-      }
-      res.json(data);
-    } catch (e) {
-      res.status(500).json({ error: 'Failed to read run record' });
-    }
-  });
+// 3. Get README.md content
+app.get('/api/readme', (req, res) => {
+  const readmePath = path.join(__dirname, 'README.md');
+  if (fs.existsSync(readmePath)) {
+    const content = fs.readFileSync(readmePath, 'utf-8');
+    res.json({ content });
+  } else {
+    res.status(404).json({ error: 'README.md not found' });
+  }
 });
 
 // ---------------- Dev Server & Static Setup ----------------
@@ -489,7 +154,7 @@ async function startServer() {
   }
 
   app.listen(PORT, () => {
-    console.log(`TestCraft Engine Server running at http://0.0.0.0:${PORT}`);
+    console.log(`TestCraft CLI Server running at http://0.0.0.0:${PORT}`);
   });
 }
 

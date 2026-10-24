@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# TestCraft - Autonomous LLM Pytest Generation & Self-Healing CLI Wrapper
+PYTHONPATH=".:$PYTHONPATH" exec python3 engine/cli.py "$@"

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="testcraft_suite" tests="11" failures="1" errors="0" time="0.002"><testcase name="test_add_basic" classname="test_run_da90194a1b" time="0.000"><failure message="Simulated initial test assertion failure to exercise repair loop" type="AssertionError">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_da90194a1b.py", line 8, in test_add_basic
+    assert False, "Simulated initial test assertion failure to exercise repair loop"
+AssertionError: Simulated initial test assertion failure to exercise repair loop
+</failure></testcase><testcase name="test_divide_edge_cases" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_divide_normal" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_factorial_edge_cases" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_factorial_normal" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_multiply_edge_cases" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_multiply_normal" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_power_edge_cases" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_power_normal" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_subtract_edge_cases" classname="test_run_da90194a1b" time="0.000" /><testcase name="test_subtract_normal" classname="test_run_da90194a1b" time="0.000" /></testsuite>

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# TestCraft - Quick Start Validation Harness (Unix / Linux / macOS)
+set -e
+
+# Resolve script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export PYTHONPATH="$SCRIPT_DIR:$PYTHONPATH"
+
+# Run validatekaro subcommand
+exec python3 "$SCRIPT_DIR/engine/cli.py" validatekaro "$@"

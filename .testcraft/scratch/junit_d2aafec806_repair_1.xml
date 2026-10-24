@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="testcraft_suite" tests="18" failures="0" errors="16" time="0.002"><testcase name="test_CartItem_instantiation" classname="test_run_d2aafec806_repair_1" time="0.000" /><testcase name="test_ShoppingCart_instantiation" classname="test_run_d2aafec806_repair_1" time="0.000" /><testcase name="test_add_item_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'add_item' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 34, in test_add_item_edge_cases
+    assert callable(add_item)
+NameError: name 'add_item' is not defined
+</error></testcase><testcase name="test_add_item_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'add_item' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 25, in test_add_item_normal
+    res = add_item()
+NameError: name 'add_item' is not defined
+</error></testcase><testcase name="test_apply_coupon_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'apply_coupon' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 66, in test_apply_coupon_edge_cases
+    assert callable(apply_coupon)
+NameError: name 'apply_coupon' is not defined
+</error></testcase><testcase name="test_apply_coupon_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'apply_coupon' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 57, in test_apply_coupon_normal
+    res = apply_coupon()
+NameError: name 'apply_coupon' is not defined
+</error></testcase><testcase name="test_calculate_discount_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_discount' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 98, in test_calculate_discount_edge_cases
+    assert callable(calculate_discount)
+NameError: name 'calculate_discount' is not defined
+</error></testcase><testcase name="test_calculate_discount_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_discount' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 89, in test_calculate_discount_normal
+    res = calculate_discount()
+NameError: name 'calculate_discount' is not defined
+</error></testcase><testcase name="test_calculate_subtotal_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_subtotal' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 82, in test_calculate_subtotal_edge_cases
+    assert callable(calculate_subtotal)
+NameError: name 'calculate_subtotal' is not defined
+</error></testcase><testcase name="test_calculate_subtotal_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_subtotal' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 73, in test_calculate_subtotal_normal
+    res = calculate_subtotal()
+NameError: name 'calculate_subtotal' is not defined
+</error></testcase><testcase name="test_calculate_tax_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_tax' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 114, in test_calculate_tax_edge_cases
+    assert callable(calculate_tax)
+NameError: name 'calculate_tax' is not defined
+</error></testcase><testcase name="test_calculate_tax_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_tax' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 105, in test_calculate_tax_normal
+    res = calculate_tax()
+NameError: name 'calculate_tax' is not defined
+</error></testcase><testcase name="test_calculate_total_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_total' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 130, in test_calculate_total_edge_cases
+    assert callable(calculate_total)
+NameError: name 'calculate_total' is not defined
+</error></testcase><testcase name="test_calculate_total_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'calculate_total' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 121, in test_calculate_total_normal
+    res = calculate_total()
+NameError: name 'calculate_total' is not defined
+</error></testcase><testcase name="test_remove_item_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'remove_item' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 50, in test_remove_item_edge_cases
+    assert callable(remove_item)
+NameError: name 'remove_item' is not defined
+</error></testcase><testcase name="test_remove_item_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'remove_item' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 41, in test_remove_item_normal
+    res = remove_item()
+NameError: name 'remove_item' is not defined
+</error></testcase><testcase name="test_subtotal_edge_cases" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'subtotal' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 18, in test_subtotal_edge_cases
+    assert callable(subtotal)
+NameError: name 'subtotal' is not defined
+</error></testcase><testcase name="test_subtotal_normal" classname="test_run_d2aafec806_repair_1" time="0.000"><error message="NameError: name 'subtotal' is not defined" type="Error">Traceback (most recent call last):
+  File "/app/applet/engine/runner/harness.py", line 123, in run_test_module
+    test_fn()
+  File "/app/applet/.testcraft/scratch/test_run_d2aafec806_repair_1.py", line 9, in test_subtotal_normal
+    res = subtotal()
+NameError: name 'subtotal' is not defined
+</error></testcase></testsuite>
