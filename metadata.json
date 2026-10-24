@@ -1,0 +1,6 @@
+{
+  "name": "TestCraft - Autonomous LLM Pytest Engine & Self-Healing Workbench",
+  "description": "Autonomous Python test generation, AST validation, isolated test execution, and failure repair workbench powered by Gemini and Gemma.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
